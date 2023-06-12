@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { ClientResponse } from '../../models/client.response.model';
+
+import { ClientResponse } from './../../../../core/models/client.response.model';
+import { ProblemTwoService } from './../../../../core/services/problem-two.service';
 
 @Component({
   selector: 'app-problem-two',
@@ -9,37 +10,30 @@ import { ClientResponse } from '../../models/client.response.model';
   styleUrls: ['./problem-two.component.css']
 })
 export class ProblemTwoComponent implements OnInit {
-
-  env = 'http://localhost:8000/api/problem-2/index';
   constructor(
-    private http: HttpClient
+    private service: ProblemTwoService
   ) { }
 
   stringField = new FormControl('');
-  success: boolean = false;
-  response: ClientResponse = { ok: false, data: { max: 0, list: []} };
+  response: ClientResponse = { ok: false, data: { max: 0, list: [] } };
 
   ngOnInit(): void {
     this.stringField.valueChanges
-      .subscribe(val => {
-        console.log(val);
-      });
+      .subscribe(console.log);
   }
 
   calculate() {
     if (this.stringField != null && this.stringField.value != null) {
 
-      this.http.get<ClientResponse>(this.env, {
-        params: new HttpParams().set('cadena', this.stringField.value!)
+      this.service.calculate({
+        "cadena": this.stringField.value!
       })
         .subscribe(
           res => {
             console.log(res)
-            this.success = res.ok;
             this.response = res;
           }
         );
     }
   }
-
 }
