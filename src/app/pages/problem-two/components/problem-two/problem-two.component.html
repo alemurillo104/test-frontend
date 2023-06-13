@@ -13,31 +13,47 @@
                 <div class="card text-bg-light">
                     <div class="card-header"><strong>Input</strong></div>
                     <div class="card-body">
-                        <textarea class="form-control" [formControl]="stringField" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <!-- <textarea class="form-control" [formControl]="stringField" id="exampleFormControlTextarea1" rows="1"></textarea> -->
+                        <input class="form-control" [formControl]="stringField" (ngModelChange)="onInputChange()" type="text" placeholder="Type your string" aria-label="default input example">
                         <br>
-                        <button type="button" class="btn btn-primary" (click)="calculate()">Calculate</button>
+                        <button [disabled]="this.stringField.value == '' || this.statusResponse == StatusResponse.loading" type="button" class="btn btn-primary" (click)="calculate()">Calculate</button>&nbsp;
+                        <button [disabled]="this.statusResponse == StatusResponse.loading" type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col col-sm-12 col-md-6">
-            <div *ngIf="this.response.ok" class="card text-bg-light" >
+            <div class="card text-bg-light">
                 <div class="card-header"><strong>Output</strong></div>
                 <div class="card-body">
-                  <p>We calculated and got the following result:</p>
-                  <h5 class="card-title">Max value : {{ response.data.max }}</h5>
-                    <p style="margin-top: 1em;">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        View details
-                        </button>
-                    </p>
-                    <div class="collapse" id="collapseExample" >
-                        <div class="card card-body" style="max-height: 5rem; overflow-y: auto;">
-                            <p *ngFor="let ele of this.response.data.list">
-                                f('{{ ele.substring }}') = {{ ele.value }} <br>
-                            </p>
+                    <p *ngIf="this.statusResponse == StatusResponse.initial">Try this game! Insert a text in the left
+                        input :).</p>
+                    <div class="container text-center" *ngIf="this.statusResponse == StatusResponse.loading">
+                        <p class="text-start">Please wait a little, we're calculating...</p>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+
+                    <ng-container *ngIf="this.statusResponse == StatusResponse.success">
+                        <p>Great! Your typed string was : <strong>{{ this.actualString }}</strong></p>
+                        <p>We calculated and got the following result:</p>
+                        <h5 class="card-title">Max value : {{ response.data.max }}</h5>
+                        <p style="margin-top: 1em;">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                View details
+                            </button>
+                        </p>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body" style="max-height: 5rem; overflow-y: auto;">
+                                <p *ngFor="let ele of this.response.data.list">
+                                    f('{{ ele.substring }}') = {{ ele.value }} <br>
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+
                 </div>
             </div>
         </div>
