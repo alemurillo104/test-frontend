@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ClientResponse } from './../../../../core/models/client.response.model';
 import { ProblemTwoService } from './../../../../core/services/problem-two.service';
 import { StatusResponse } from '../../../../core/utils/enums/status.enum';
+import { InputValidator } from 'src/app/core/utils/validators/input.validator';
 
 @Component({
   selector: 'app-problem-two',
@@ -11,32 +12,51 @@ import { StatusResponse } from '../../../../core/utils/enums/status.enum';
   styleUrls: ['./problem-two.component.css']
 })
 export class ProblemTwoComponent implements OnInit {
-  constructor(
-    private service: ProblemTwoService
-  ) { }
 
-  stringField = new FormControl('');
+  myForm!: FormGroup;
+
+  constructor(
+    private formBuilder : FormBuilder,
+    private service: ProblemTwoService
+  ) {
+    this.buildForm();
+  }
+
+  private buildForm(){
+    this.myForm = this.formBuilder.group({
+      textString : ['', [Validators.required, InputValidator.isEmpty]]
+    });
+  }
+
+  get stringField(){
+    return this.myForm.get('textString');
+  }
+
+  setStringField(data: string){
+    this.myForm.setValue({'textString': data.trim()});
+  }
+
   StatusResponse = StatusResponse;
   statusResponse: StatusResponse = StatusResponse.initial;
   actualString : string = '';
   response: ClientResponse = { ok: false, data: { max: 0, list: [] } };
 
   ngOnInit(): void {
-    this.stringField.valueChanges
+    this.stringField?.valueChanges
       .subscribe(console.log);
   }
 
   calculate() {
-    if (this.stringField != null && this.stringField.value != null) {
+    if(this.myForm.valid){
       this.statusResponse = StatusResponse.loading;
-      this.actualString = this.stringField.value!;
+      this.actualString = this.stringField?.value.replace(/\s/g, "");
       this.service.calculate({
-        "cadena": this.stringField.value!
+        "cadena": this.actualString
       })
         .subscribe(
           res => {
             console.log(res)
-            this.stringField.setValue("");
+            this.setStringField("");
             this.response = res;
             this.statusResponse = (this.response.ok)
               ? StatusResponse.success
@@ -48,7 +68,7 @@ export class ProblemTwoComponent implements OnInit {
 
   clear(){
     this.statusResponse = StatusResponse.initial;
-    this.stringField.setValue("");
+    this.setStringField("");
   }
 
   onInputChange(){

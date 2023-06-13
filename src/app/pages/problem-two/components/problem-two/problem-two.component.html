@@ -13,10 +13,11 @@
                 <div class="card text-bg-light">
                     <div class="card-header"><strong>Input</strong></div>
                     <div class="card-body">
-                        <!-- <textarea class="form-control" [formControl]="stringField" id="exampleFormControlTextarea1" rows="1"></textarea> -->
-                        <input class="form-control" [formControl]="stringField" (ngModelChange)="onInputChange()" type="text" placeholder="Type your string" aria-label="default input example">
+                        <form [formGroup]="myForm">
+                            <input class="form-control" formControlName="textString" (ngModelChange)="onInputChange()" type="text" placeholder="Type your string" aria-label="default input example">
+                        </form>
                         <br>
-                        <button [disabled]="this.stringField.value == '' || this.statusResponse == StatusResponse.loading" type="button" class="btn btn-primary" (click)="calculate()">Calculate</button>&nbsp;
+                        <button [disabled]="!myForm.valid || this.statusResponse == StatusResponse.loading" type="button" class="btn btn-primary" (click)="calculate()">Calculate</button>&nbsp;
                         <button [disabled]="this.statusResponse == StatusResponse.loading" type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
                     </div>
                 </div>
