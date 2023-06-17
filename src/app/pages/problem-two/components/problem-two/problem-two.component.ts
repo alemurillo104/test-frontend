@@ -16,18 +16,18 @@ export class ProblemTwoComponent implements OnInit {
   myForm!: FormGroup;
 
   constructor(
-    private formBuilder : FormBuilder,
+    private formBuilder: FormBuilder,
     private service: ProblemTwoService
   ) {
     this.buildForm();
   }
 
-  private buildForm(){
+  private buildForm() {
     this.myForm = this.formBuilder.group({
-      textString : [
+      textString: [
         '', [
-          Validators.required, 
-          InputValidator.isEmpty, 
+          Validators.required,
+          InputValidator.isEmpty,
           Validators.pattern('^[a-zA-Z ]*$'),
           Validators.minLength(1),
           Validators.maxLength(100000)
@@ -36,17 +36,17 @@ export class ProblemTwoComponent implements OnInit {
     });
   }
 
-  get stringField(){
+  get stringField() {
     return this.myForm.get('textString');
   }
 
-  setStringField(data: string){
-    this.myForm.setValue({'textString': data.trim()});
+  setStringField(data: string) {
+    this.myForm.setValue({ 'textString': data.trim() });
   }
 
   StatusResponse = StatusResponse;
   statusResponse: StatusResponse = StatusResponse.initial;
-  actualString : string = '';
+  actualString: string = '';
   response: ClientResponse = { ok: false, data: { max: 0, list: [] } };
 
   ngOnInit(): void {
@@ -55,11 +55,11 @@ export class ProblemTwoComponent implements OnInit {
   }
 
   calculate() {
-    if(this.myForm.valid){
+    if (this.myForm.valid) {
       this.statusResponse = StatusResponse.loading;
       this.actualString = this.stringField?.value.replace(/\s/g, "");
       this.service.calculate({
-        "cadena": this.actualString
+        "stringText": this.actualString
       })
         .subscribe(
           res => {
@@ -74,12 +74,12 @@ export class ProblemTwoComponent implements OnInit {
     }
   }
 
-  clear(){
+  clear() {
     this.statusResponse = StatusResponse.initial;
     this.setStringField("");
   }
 
-  onInputChange(){
+  onInputChange() {
     this.statusResponse = StatusResponse.initial;
   }
 }

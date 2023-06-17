@@ -1,5 +1,5 @@
 
 
-export interface StringRequest{
-    cadena : string,
+export interface StringRequest {
+    stringText: string,
 }
