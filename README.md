@@ -1,5 +1,9 @@
 # Test Frontend
 
+## Technologies used
+
+`Angular`, `Typescript`.
+
 ## Required installations
 ```
 -node 18.13.0 or stable
