@@ -7,10 +7,6 @@ const routes: Routes = [
     redirectTo: '/problem-2',
     pathMatch: 'full'
   },
-  // {
-  //   path: 'problem-2',
-  //   component: ProblemTwoComponent
-  // },
   {
     path: 'problem-2',
     loadChildren: () => import('./pages/problem-two/problem-two.module').then(m => m.ProblemTwoModule)
