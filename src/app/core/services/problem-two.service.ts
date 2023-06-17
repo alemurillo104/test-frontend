@@ -14,6 +14,6 @@ export class ProblemTwoService {
   ) { }
 
   calculate( data: StringRequest ){
-    return this.http.post<ClientResponse>(`${environment.url_api}/problem-2/index`, data);
+    return this.http.post<ClientResponse>(`${environment.url_api}/problem-2`, data);
   }
 }

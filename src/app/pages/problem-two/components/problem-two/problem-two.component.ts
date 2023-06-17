@@ -24,7 +24,15 @@ export class ProblemTwoComponent implements OnInit {
 
   private buildForm(){
     this.myForm = this.formBuilder.group({
-      textString : ['', [Validators.required, InputValidator.isEmpty]]
+      textString : [
+        '', [
+          Validators.required, 
+          InputValidator.isEmpty, 
+          Validators.pattern('^[a-zA-Z ]*$'),
+          Validators.minLength(1),
+          Validators.maxLength(100000)
+        ]
+      ]
     });
   }
 

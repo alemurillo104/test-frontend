@@ -14,10 +14,10 @@
                     <div class="card-header"><strong>Input</strong></div>
                     <div class="card-body">
                         <form [formGroup]="myForm">
-                            <input class="form-control" formControlName="textString" (ngModelChange)="onInputChange()" type="text" placeholder="Type your string" aria-label="default input example">
+                            <textarea id="input-1" class="form-control" formControlName="textString"  (ngModelChange)="onInputChange()" id="exampleFormControlTextarea1" rows="1" ></textarea>
                         </form>
                         <br>
-                        <button [disabled]="!myForm.valid || this.statusResponse == StatusResponse.loading" type="button" class="btn btn-primary" (click)="calculate()">Calculate</button>&nbsp;
+                        <button [disabled]="!myForm.valid || this.statusResponse == StatusResponse.loading" type="button"  class="btn btn-primary" (click)="calculate()">Calculate</button>&nbsp;
                         <button [disabled]="this.statusResponse == StatusResponse.loading" type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <ng-container *ngIf="this.statusResponse == StatusResponse.success">
                         <p>Great! Your typed string was : <strong>{{ this.actualString }}</strong></p>
                         <p>We calculated and got the following result:</p>
-                        <h5 class="card-title">Max value : {{ response.data.max }}</h5>
+                        <h5 id="output-2" class="card-title">Max value : {{ response.data.max }}</h5>
                         <p style="margin-top: 1em;">
                             <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
